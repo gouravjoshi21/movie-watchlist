@@ -1,5 +1,12 @@
+import Header from '../ui/Header'
+
 function Movie() {
-    return <div>Movie details</div>
+    return (
+        <>
+            <Header />
+            <h1>Movie details</h1>
+        </>
+    )
 }
 
 export default Movie
