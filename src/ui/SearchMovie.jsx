@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from 'react'
 import { RiMovie2Line } from 'react-icons/ri'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const movieList = [
@@ -54,14 +55,14 @@ const Parent = styled.div`
         border: none;
         outline: none;
         background-color: var(--color-bg-2);
-
+        transition: none;
         &:focus {
             border-radius: 12px 12px 0 0;
         }
 
-        &:focus ~ .search-list {
+        /* &:focus ~ .search-list {
             display: grid;
-        }
+        } */
     }
 `
 
@@ -78,13 +79,13 @@ const List = styled.ul`
     left: 0;
     z-index: 99;
 
-    display: none;
     gap: 4px;
 `
 
 const Item = styled.li`
     display: grid;
     grid-template-columns: 60px 1fr;
+    cursor: pointer;
 
     p {
         padding: 4px 8px;
@@ -136,24 +137,53 @@ const Message = styled.li`
 `
 
 function SearchMovie() {
+    const [active, setActive] = useState(false)
+    const navigate = useNavigate()
+    const parentRef = useRef(null)
+
+    function handleFocus(status) {
+        const time = status ? 300 : 1
+        setTimeout(() => setActive(status), time)
+    }
+
+    function handleClick(id) {
+        console.log(id)
+        navigate(`/movie/${id}`)
+    }
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (parentRef.current && !parentRef.current.contains(event.target)) {
+                handleFocus(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [parentRef])
+
     return (
-        <Parent>
-            <input type="search" placeholder="Search movies..." />
-            <List className="search-list">
-                {/* <Message>Type something</Message> */}
-                {movieList.map((movie) => (
-                    <Item as={Link} to={`/movie/${movie.id}`}>
-                        <Cover>
-                            {movie.cover ? (
-                                <img src={movie.cover} alt={`Movie cover of ${movie.title}`} />
-                            ) : (
-                                <RiMovie2Line />
-                            )}
-                        </Cover>
-                        <p>{movie.title}</p>
-                    </Item>
-                ))}
-            </List>
+        <Parent ref={parentRef}>
+            <input type="search" placeholder="Search movies..." onFocus={() => handleFocus(true)} />
+            {active && (
+                <List className="search-list">
+                    {/* <Message>Type something</Message> */}
+                    {movieList.map((movie) => (
+                        <Item onClick={() => handleClick(movie.id)}>
+                            <Cover>
+                                {movie.cover ? (
+                                    <img src={movie.cover} alt={`Movie cover of ${movie.title}`} />
+                                ) : (
+                                    <RiMovie2Line />
+                                )}
+                            </Cover>
+                            <p>{movie.title}</p>
+                        </Item>
+                    ))}
+                </List>
+            )}
         </Parent>
     )
 }
