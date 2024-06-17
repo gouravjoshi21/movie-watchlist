@@ -9,6 +9,9 @@ import { AiOutlineDelete } from 'react-icons/ai'
 import { FiEdit2 } from 'react-icons/fi'
 import { MdOutlineArrowOutward } from 'react-icons/md'
 import { FaRegEye } from 'react-icons/fa'
+import Modal from '../../ui/Modal'
+import Confirm from '../../ui/Confirm'
+import { useDeleteMovie } from './useDeleteMovie'
 
 const Parent = styled.div`
     width: 200px;
@@ -84,7 +87,13 @@ const Tags = styled.div`
     gap: 6px;
 `
 
-function MovieItem({ movie: { id, title, description, year, genre, cover } }) {
+function MovieItem({ movie: { id, title, description, year, genre, cover, rating } }) {
+    const { deleteMovie, isDeleting } = useDeleteMovie()
+
+    function handleRemove(id) {
+        deleteMovie(id)
+    }
+
     return (
         <Parent>
             <Cover className="cover" as={Link} to={`/movie/${id}`}>
@@ -97,28 +106,46 @@ function MovieItem({ movie: { id, title, description, year, genre, cover } }) {
                     </Link>
                 </p>
 
-                <Menus>
-                    <Menus.Menu>
-                        <Menus.Toggle id={id} />
-                        <Menus.List id={id}>
-                            <Menus.Button
-                                icon={<MdOutlineArrowOutward />}
-                                as={Link}
-                                to={`/movie/${id}`}
-                            >
-                                View
-                            </Menus.Button>
-                            <Menus.Button icon={<FiEdit2 />} as={Link} to={`/edit-movie/${id}`}>
-                                Edit
-                            </Menus.Button>
-                            <Menus.Button icon={<AiOutlineDelete />}>Remove</Menus.Button>
-                            <Menus.Button icon={<FaRegEye />}>Watched</Menus.Button>
-                        </Menus.List>
-                    </Menus.Menu>
-                </Menus>
+                <Modal>
+                    <Menus>
+                        <Menus.Menu>
+                            <Menus.Toggle id={id} />
+                            <Menus.List id={id}>
+                                <Menus.Button
+                                    icon={<MdOutlineArrowOutward />}
+                                    as={Link}
+                                    to={`/movie/${id}`}
+                                >
+                                    View
+                                </Menus.Button>
+                                <Menus.Button icon={<FiEdit2 />} as={Link} to={`/edit-movie/${id}`}>
+                                    Edit
+                                </Menus.Button>
+                                <Modal.Open opens="remove-movie">
+                                    <Menus.Button icon={<AiOutlineDelete />}>Remove</Menus.Button>
+                                </Modal.Open>
+
+                                <Menus.Button icon={<FaRegEye />}>Watched</Menus.Button>
+                            </Menus.List>
+                        </Menus.Menu>
+                    </Menus>
+
+                    <Modal.Window type="popup" name="remove-movie">
+                        <Confirm
+                            title="Remove"
+                            type="danger"
+                            label="Remove"
+                            disabled={isDeleting}
+                            onConfirm={() => handleRemove(id)}
+                        >
+                            Do you remove this movie from watchlist?
+                        </Confirm>
+                    </Modal.Window>
+                </Modal>
+
                 <Tags>
                     <Chip>{ucfirst(genre)}</Chip>
-                    <Chip>⭐ 4 rating</Chip>
+                    {rating && <Chip>⭐ 4 rating</Chip>}
                 </Tags>
             </Content>
         </Parent>

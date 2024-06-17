@@ -43,10 +43,10 @@ const variations = {
     `,
     secondary: css`
         color: var(--color-text-1);
-        background: var(--color-prim-2);
+        background: var(--color-bg-3);
 
         &:hover {
-            background-color: var(--color-prim-1);
+            background-color: var(--color-bg-4);
         }
     `,
     tertiary: css`
@@ -60,10 +60,10 @@ const variations = {
     `,
     danger: css`
         color: var(--color-text-1);
-        background-color: var(--color-red-1);
+        background-color: var(--color-red-2);
 
         &:hover {
-            background-color: var(--color-red-2);
+            background-color: var(--color-red-1);
         }
     `
 }

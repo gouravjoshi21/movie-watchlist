@@ -19,7 +19,8 @@ const GlobalStyles = createGlobalStyle`
 
         --color-green-1: #74d19e;
 
-        --color-red-1: #c53d3d;
+        --color-red-1: #B82727;
+        --color-red-2: #c53d3d;
 
         --border-radius-sm: 6px;
         --border-radius-md: 8px;

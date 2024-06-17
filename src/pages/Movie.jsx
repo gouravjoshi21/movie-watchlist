@@ -17,6 +17,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addMovieInWatchList } from '../features/movie/movieSlice'
 import { RiMovie2Line } from 'react-icons/ri'
 import { useCreateMovie } from '../features/movie/useCreateMovie'
+import Modal from '../ui/Modal'
+import Confirm from '../ui/Confirm'
+import { useDeleteMovie } from '../features/movie/useDeleteMovie'
 
 const data = {
     id: 4,
@@ -122,6 +125,7 @@ const Buttons = styled.div`
 
 function Movie({ imbd = false }) {
     const watchList = useSelector((state) => state.movie.watchList)
+    const { deleteMovie, isDeleting } = useDeleteMovie()
     const { createMovie, isCreating } = useCreateMovie()
     const [data, setData] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
@@ -169,6 +173,10 @@ function Movie({ imbd = false }) {
         getData()
     }, [id, imbd])
 
+    function handleRemove(id) {
+        deleteMovie(id)
+    }
+
     return (
         <>
             {isLoading && <Main>Loading...</Main>}
@@ -187,12 +195,11 @@ function Movie({ imbd = false }) {
                             <SlCalender />
                             {data.year ?? '----'}
                         </Year>
-                        {data.rating && (
-                            <Tags>
-                                <Chip>{ucfirst(data.genre)}</Chip>
-                                <Chip>⭐ 4 rating</Chip>
-                            </Tags>
-                        )}
+
+                        <Tags>
+                            <Chip>{ucfirst(data.genre)}</Chip>
+                            {data.rating && <Chip>⭐ 4 rating</Chip>}
+                        </Tags>
                     </Title>
 
                     {data.description && <Description>{data.description}</Description>}
@@ -200,10 +207,26 @@ function Movie({ imbd = false }) {
                     <Buttons>
                         {!imbd && (
                             <>
-                                <Button size="small" var="tertiary">
-                                    <AiOutlineDelete />
-                                    View
-                                </Button>
+                                <Modal>
+                                    <Modal.Open opens="logout">
+                                        <Button size="small" var="tertiary">
+                                            <AiOutlineDelete />
+                                            Remove
+                                        </Button>
+                                    </Modal.Open>
+                                    <Modal.Window type="popup" name="logout">
+                                        <Confirm
+                                            title="Remove"
+                                            type="danger"
+                                            label="Remove"
+                                            disabled={isDeleting}
+                                            onConfirm={() => handleRemove(data.id)}
+                                        >
+                                            Do you remove this movie from watchlist?
+                                        </Confirm>
+                                    </Modal.Window>
+                                </Modal>
+
                                 <Button size="small" var="tertiary">
                                     <FaRegEye />
                                     Watched

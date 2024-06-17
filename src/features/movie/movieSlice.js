@@ -12,17 +12,35 @@ const movieSlice = createSlice({
     initialState,
     reducers: {
         setSearchQuery(state, action) {
-            console.log(action.payload.query)
             state.searchQuery = action.payload.query
         },
         addMovieInWatchList(state, action) {
-            state.watchList.push(action.payload.movie)
+            state.watchList.unshift(action.payload.movie)
         },
         setWatchList(state, action) {
             state.watchList = action.payload.movies
+        },
+        updateMovieInWatchList(state, action) {
+            const { id, ...newData } = action.payload.movie
+            const movieIndex = state.watchList.findIndex((movie) => movie.id === id)
+            if (movieIndex !== -1) {
+                state.watchList[movieIndex] = {
+                    ...state.watchList[movieIndex],
+                    ...newData
+                }
+            }
+        },
+        removeMovieFromWatchList(state, action) {
+            state.watchList = state.watchList.filter((movie) => movie.id !== action.payload.id)
         }
     }
 })
 
-export const { setSearchQuery, addMovieInWatchList, setWatchList } = movieSlice.actions
+export const {
+    setSearchQuery,
+    addMovieInWatchList,
+    setWatchList,
+    updateMovieInWatchList,
+    removeMovieFromWatchList
+} = movieSlice.actions
 export default movieSlice.reducer

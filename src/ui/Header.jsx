@@ -24,7 +24,7 @@ function Header() {
 
             <SearchMovie />
 
-            <Button size="small" var="secondary" as={Link} to="/add-movie">
+            <Button size="small" as={Link} to="/add-movie">
                 {/* <GoPlus /> */}
                 Add Movie
             </Button>

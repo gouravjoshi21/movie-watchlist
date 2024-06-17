@@ -5,6 +5,7 @@ import Button from '../../ui/Button'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useCreateMovie } from './useCreateMovie'
+import { useUpdateMovie } from './useUpdateMovie'
 
 const Form = styled.form`
     max-width: 500px;
@@ -32,16 +33,21 @@ const ButtonWrapper = styled.div`
     gap: 8px;
 `
 
-function MovieForm() {
+function MovieForm({ movie = null }) {
     const { createMovie, isCreating } = useCreateMovie()
+    const { updateMovie, isUpdating } = useUpdateMovie()
     const {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm()
+    } = useForm({
+        defaultValues: movie ?? {}
+    })
+    const isNew = movie ? false : true
 
     function onSubmit(data) {
-        createMovie(data)
+        if (isNew) createMovie(data)
+        else updateMovie(data)
     }
 
     const isImageUrl = (url) => {
@@ -105,12 +111,24 @@ function MovieForm() {
                 </FormRow>
             </Wrapper>
             <ButtonWrapper>
-                <Button size="medium" var="tertiary" as={Link} to="/" disabled={isCreating}>
+                <Button
+                    size="medium"
+                    var="tertiary"
+                    as={Link}
+                    to="/"
+                    disabled={isCreating || isUpdating}
+                >
                     Cancel
                 </Button>
-                <Button size="medium" var="primary" disabled={isCreating}>
-                    {isCreating ? 'Adding...' : 'Add'}
-                </Button>
+                {isNew ? (
+                    <Button size="medium" var="primary" disabled={isCreating}>
+                        {isCreating ? 'Adding...' : 'Add'}
+                    </Button>
+                ) : (
+                    <Button size="medium" var="primary" disabled={isUpdating}>
+                        {isUpdating ? 'Updating...' : 'Update'}
+                    </Button>
+                )}
             </ButtonWrapper>
         </Form>
     )

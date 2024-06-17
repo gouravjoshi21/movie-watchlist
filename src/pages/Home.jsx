@@ -6,7 +6,7 @@ import Heading from '../ui/Heading'
 import MovieList from '../features/movie/MovieList'
 
 const Main = styled(Container)`
-    padding: 32px 16px;
+    padding: 32px 16px 64px 16px;
 
     h1 {
         color: var(--color-text-2);

@@ -2,7 +2,11 @@ import { browserId } from '../utils/browserId'
 import supabase from './supabase'
 
 export async function getMovies() {
-    const { data, error } = await supabase.from('movies').select('*').eq('browser_id', browserId())
+    const { data, error } = await supabase
+        .from('movies')
+        .select('*')
+        .eq('browser_id', browserId())
+        .order('created_at', { ascending: false })
 
     if (error) {
         console.error(message)
@@ -24,4 +28,26 @@ export async function createMovie(movie) {
     }
 
     return data
+}
+
+export async function updateMovie(movie) {
+    const { data, error } = await supabase.from('movies').update(movie).eq('id', movie.id).select()
+
+    if (error) {
+        console.error(error)
+        throw new Error(error.message)
+    }
+
+    return data
+}
+
+export async function deleteMovie(id) {
+    const { error } = await supabase.from('movies').delete().eq('id', id)
+
+    if (error) {
+        console.error(error)
+        throw new Error(error.message)
+    }
+
+    return id
 }

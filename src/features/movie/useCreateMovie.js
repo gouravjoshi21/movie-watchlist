@@ -10,7 +10,7 @@ export function useCreateMovie() {
     const dispath = useDispatch()
     const navigate = useNavigate()
 
-    const { mutate: createMovie, isLoading: isCreating } = useMutation({
+    const { mutate: createMovie, isPending: isCreating } = useMutation({
         mutationFn: createMovieApi,
         onSuccess: (data) => {
             dispath(addMovieInWatchList({ movie: data[0] }))

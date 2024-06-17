@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import Container from '../ui/Container'
 import Heading from '../ui/Heading'
 import MovieForm from '../features/movie/MovieForm'
+import { useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const Main = styled(Container)`
     max-width: 400px;
@@ -40,6 +42,12 @@ const Title = styled.div`
 `
 
 function EditMovie() {
+    const watchList = useSelector((state) => state.movie.watchList)
+    const navigate = useNavigate()
+    let { id } = useParams()
+    let filtered = watchList.filter((movie) => movie.id == id)
+    if (filtered.length) navigate('/')
+
     return (
         <>
             <Background />
@@ -50,7 +58,7 @@ function EditMovie() {
                     <p>Update the details of the movie in your watchlist.</p>
                 </Title>
 
-                <MovieForm />
+                <MovieForm movie={filtered[0]} />
             </Main>
         </>
     )
