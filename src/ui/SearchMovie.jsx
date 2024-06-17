@@ -104,7 +104,7 @@ const Cover = styled.div`
     width: 100%;
     height: 90px;
     overflow: hidden;
-    background: var(--color-bg-2);
+    background: var(--color-bg-3);
 
     position: relative;
 
@@ -124,7 +124,7 @@ const Cover = styled.div`
         height: 24px;
         transition: all 0.2s;
         path {
-            fill: var(--color-bg-3);
+            fill: var(--color-text-3);
         }
     }
 `

@@ -6,10 +6,11 @@ const sizes = {
         font-size: 14px;
         font-weight: 400;
         padding: 0 16px;
+        border-radius: var(--border-radius-md);
 
         svg {
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
         }
     `,
     medium: css`
@@ -33,11 +34,11 @@ const sizes = {
 
 const variations = {
     primary: css`
-        color: var(--color-bg-1);
-        background-color: var(--color-text-1);
+        color: var(--color-text-1);
+        background-color: var(--color-prim-2);
 
         &:hover {
-            background-color: var(--color-text-1);
+            background-color: var(--color-prim-1);
         }
     `,
     secondary: css`

@@ -23,6 +23,8 @@ const GlobalStyles = createGlobalStyle`
 
         --border-radius-sm: 6px;
         --border-radius-md: 8px;
+
+        --color-glass-1: rgba(62, 62, 62, 0.58);
     }
 
     *,
@@ -45,6 +47,7 @@ const GlobalStyles = createGlobalStyle`
         color: var(--color-text-2);
         transition: color 0.3s, background-color 0.3s;
         min-height: 100vh;
+        overflow-x: hidden;
         line-height: 1.5;
         background: var(--color-bg-1);
     }
