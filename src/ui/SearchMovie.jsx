@@ -153,7 +153,10 @@ function SearchMovie() {
             />
             {active && (
                 <List className="search-list">
-                    {query.length < 3 && <Message>Type something</Message>}
+                    {query.length == 0 && <Message>Type something</Message>}
+                    {query.length > 0 && query.length < 3 && (
+                        <Message>Type at least 3 characters</Message>
+                    )}
                     {isLoading && <Message>Loading...</Message>}
                     {query.length > 2 &&
                         !isLoading &&
