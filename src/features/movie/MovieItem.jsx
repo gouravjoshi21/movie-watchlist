@@ -135,6 +135,7 @@ function MovieItem({ movie: { id, title, description, year, genre, cover, rating
                                     <Menus.Button
                                         icon={<FaRegEye />}
                                         onClick={() => toggleWatchStatus(true)}
+                                        disabled={isUpdating}
                                     >
                                         Set Watched
                                     </Menus.Button>
@@ -142,8 +143,9 @@ function MovieItem({ movie: { id, title, description, year, genre, cover, rating
                                     <Menus.Button
                                         icon={<FaRegEyeSlash />}
                                         onClick={() => toggleWatchStatus(false)}
+                                        disabled={isUpdating}
                                     >
-                                        Set Not Watched
+                                        Unwatched
                                     </Menus.Button>
                                 )}
                             </Menus.List>

@@ -261,7 +261,7 @@ function Movie({ imbd = false }) {
                                         disabled={isUpdating}
                                     >
                                         <FaRegEyeSlash />
-                                        Set Not Watched
+                                        Unwatched
                                     </Button>
                                 )}
                             </>
