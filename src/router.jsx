@@ -9,7 +9,8 @@ const router = createBrowserRouter([
     { path: '/', element: <Home /> },
     { path: '/movie/:id', element: <Movie /> },
     { path: '/add-movie', element: <AddMovie /> },
-    { path: '/edit-movie/:id', element: <EditMovie /> }
+    { path: '/edit-movie/:id', element: <EditMovie /> },
+    { path: '/imbd/:id', element: <Movie imbd="true" /> }
 ])
 
 export default router

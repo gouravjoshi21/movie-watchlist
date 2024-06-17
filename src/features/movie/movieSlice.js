@@ -14,9 +14,12 @@ const movieSlice = createSlice({
         setSearchQuery(state, action) {
             console.log(action.payload.query)
             state.searchQuery = action.payload.query
+        },
+        addMovieInWatchList(state, action) {
+            state.watchList.push(action.payload.movie)
         }
     }
 })
 
-export const { setSearchQuery } = movieSlice.actions
+export const { setSearchQuery, addMovieInWatchList } = movieSlice.actions
 export default movieSlice.reducer

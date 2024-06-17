@@ -111,7 +111,8 @@ function SearchMovie() {
     }
 
     function handleClick(id) {
-        navigate(`/movie/${id}`)
+        handleFocus(false)
+        navigate(`/imbd/${id}`)
     }
 
     useEffect(() => {
@@ -153,12 +154,12 @@ function SearchMovie() {
             {active && (
                 <List className="search-list">
                     {query.length < 3 && <Message>Type something</Message>}
-                    {isLoading && <Message>Type something</Message>}
+                    {isLoading && <Message>Loading...</Message>}
                     {query.length > 2 &&
                         !isLoading &&
                         movies.length > 0 &&
                         movies.map((movie) => (
-                            <Item onClick={() => handleClick(movie.imdbID)}>
+                            <Item onClick={() => handleClick(movie.imdbID)} key={movie.imdbID}>
                                 <Cover>
                                     {movie.Poster ? (
                                         <img

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Header from '../ui/Header'
 import Container from '../ui/Container'
 import Heading from '../ui/Heading'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { SlCalender } from 'react-icons/sl'
 import Chip from '../ui/Chip'
 import { ucfirst } from '../utils/helpers'
@@ -10,6 +10,11 @@ import Button from '../ui/Button'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { FaRegEye } from 'react-icons/fa'
 import Review from '../ui/Review'
+import { useEffect, useState } from 'react'
+import { KEY } from '../features/movie/useMovies'
+import { CiBookmark } from 'react-icons/ci'
+import { useDispatch, useSelector } from 'react-redux'
+import { addMovieInWatchList } from '../features/movie/movieSlice'
 
 const data = {
     id: 4,
@@ -113,48 +118,113 @@ const Buttons = styled.div`
     gap: 12px;
 `
 
-function Movie() {
+function Movie({ imbd = false }) {
+    const watchList = useSelector((state) => state.movie.watchList)
+    const [data, setData] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
+    const navigate = useNavigate()
+    const dispath = useDispatch()
+    let { id } = useParams()
+
+    function handleSaveWatchList() {
+        dispath(addMovieInWatchList({ movie: data }))
+        navigate(`/movie/${id}a`)
+    }
+
+    useEffect(() => {
+        setIsLoading(true)
+
+        async function getData() {
+            if (imbd) {
+                try {
+                    const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${id}`)
+
+                    if (!res.ok) throw new Error('Something went wrong with fetching movies')
+
+                    const data = await res.json()
+
+                    if (data.Response === 'False') throw new Error('Not found!')
+
+                    setData({
+                        title: data.Title,
+                        description: data.Plot,
+                        year: data.Year,
+                        genre: data.Genre.split(', ')[0],
+                        cover: data.Poster,
+                        id: id + 'a'
+                    })
+                    setIsLoading(false)
+                } catch (error) {
+                    navigate('/')
+                }
+            } else {
+                let filtered = watchList.filter((movie) => movie.id === id)
+                if (!filtered.length) navigate('/')
+                setData(filtered[0])
+                setIsLoading(false)
+            }
+        }
+
+        getData()
+    }, [id, imbd])
+
     return (
         <>
             <Header />
-            <Main>
-                <Cover className="cover" as={Link} to={`/movie/${data.id}`}>
-                    {data.cover ? (
-                        <img src={data.cover} alt={`Movie cover of ${data.title}`} />
-                    ) : (
-                        <RiMovie2Line />
-                    )}
-                </Cover>
-                <Title>
-                    <Heading>{data.title}</Heading>
-                    <Year>
-                        <SlCalender />
-                        {data.year ?? '----'}
-                    </Year>
-                    <Tags>
-                        <Chip>{ucfirst(data.genre)}</Chip>
-                        <Chip>⭐ 4 rating</Chip>
-                    </Tags>
-                </Title>
+            {isLoading && <Main>Loading...</Main>}
+            {!isLoading && (
+                <Main>
+                    <Cover className="cover">
+                        {data.cover ? (
+                            <img src={data.cover} alt={`Movie cover of ${data.title}`} />
+                        ) : (
+                            <RiMovie2Line />
+                        )}
+                    </Cover>
+                    <Title>
+                        <Heading>{data.title}</Heading>
+                        <Year>
+                            <SlCalender />
+                            {data.year ?? '----'}
+                        </Year>
+                        <Tags>
+                            <Chip>{ucfirst(data.genre)}</Chip>
+                            <Chip>⭐ 4 rating</Chip>
+                        </Tags>
+                    </Title>
 
-                <Description>
-                    After being bitten by a genetically-modified spider, a shy teenager gains
-                    spider-like abilities that he uses to fight injustice as a masked superhero and
-                    face a vengeful enemy.
-                </Description>
-                <Buttons>
-                    <Button size="small" var="tertiary">
-                        <AiOutlineDelete />
-                        View
-                    </Button>
-                    <Button size="small" var="tertiary">
-                        <FaRegEye />
-                        Watched
-                    </Button>
-                </Buttons>
+                    <Description>
+                        After being bitten by a genetically-modified spider, a shy teenager gains
+                        spider-like abilities that he uses to fight injustice as a masked superhero
+                        and face a vengeful enemy.
+                    </Description>
+                    <Buttons>
+                        {!imbd && (
+                            <>
+                                <Button size="small" var="tertiary">
+                                    <AiOutlineDelete />
+                                    View
+                                </Button>
+                                <Button size="small" var="tertiary">
+                                    <FaRegEye />
+                                    Watched
+                                </Button>
+                            </>
+                        )}
 
-                <Review className="movie-review" />
-            </Main>
+                        {imbd && (
+                            <>
+                                <Button size="small" var="tertiary" onClick={handleSaveWatchList}>
+                                    <CiBookmark />
+                                    Save to Watchlist
+                                </Button>
+                            </>
+                        )}
+                    </Buttons>
+
+                    {!imbd && <Review className="movie-review" />}
+                </Main>
+            )}
         </>
     )
 }

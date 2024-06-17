@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-const KEY = '45e60500'
+export const KEY = '45e60500'
 
 export function useMovies() {
     const { searchQuery: query } = useSelector((state) => state.movie)
