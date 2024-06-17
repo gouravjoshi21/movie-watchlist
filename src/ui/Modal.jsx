@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { HiXMark } from 'react-icons/hi2'
 import styled, { css } from 'styled-components'
 import useOutSideClick from './../hooks/useOutsideClick'
+import Mixins from '../styles/Mixins'
 
 const modalType = {
     popup: css`
@@ -13,6 +14,15 @@ const modalType = {
         transform: translate(-50%, -50%);
         border-radius: 16px;
         padding: 24px;
+
+        ${Mixins.tabPort`
+            width: 500px;
+        `}
+
+        ${Mixins.phone`
+            width: calc(100% - 32px);
+            padding: 16px;
+        `}
     `,
     sidebar: css`
         width: 400px;
