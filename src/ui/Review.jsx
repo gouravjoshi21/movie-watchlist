@@ -2,6 +2,9 @@ import { GoPencil } from 'react-icons/go'
 import styled from 'styled-components'
 import Button from './Button'
 import StarRating from './StarRating'
+import Modal from './Modal'
+import ReviewForm from '../features/movie/ReviewForm'
+import { useEffect } from 'react'
 
 const Parent = styled.div`
     width: 100%;
@@ -29,14 +32,27 @@ const Stars = styled.div`
     justify-content: end;
 `
 
-function Review({ review, rating, ...props }) {
+function Review({ movie, ...props }) {
+    useEffect(() => {
+        console.log(movie)
+    }, [movie])
+
     return (
         <Parent {...props}>
-            <Content>{review}</Content>
-            <Button size="small" var="tertiary">
-                <GoPencil />
-            </Button>
-            <StarRating maxRating={5} size={22} defaultRating={rating} disabled={'true'} />
+            <Content>{movie.review}</Content>
+
+            <Modal>
+                <Modal.Open opens="edit-review">
+                    <Button size="small" var="tertiary">
+                        <GoPencil />
+                    </Button>
+                </Modal.Open>
+                <Modal.Window name="edit-review" type="popup">
+                    <ReviewForm movie={movie} />
+                </Modal.Window>
+            </Modal>
+
+            <StarRating maxRating={5} size={22} defaultRating={movie.rating} disabled={'true'} />
         </Parent>
     )
 }

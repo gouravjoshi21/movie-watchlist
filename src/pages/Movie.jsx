@@ -245,13 +245,7 @@ function Movie({ imbd = false }) {
                         )}
                     </Buttons>
                     {!data.review && <ReviewForm movie={data} />}
-                    {!imbd && data.review && (
-                        <Review
-                            className="movie-review"
-                            review={data.review}
-                            rating={data.rating}
-                        />
-                    )}
+                    {!imbd && data.review && <Review className="movie-review" movie={data} />}
                 </Main>
             )}
         </>

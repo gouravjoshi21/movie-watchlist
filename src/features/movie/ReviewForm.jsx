@@ -12,7 +12,7 @@ const Parent = styled.div`
     height: 100%;
     padding: 16px;
     border-radius: var(--border-radius-md);
-    background-color: var(--color-bg-2);
+    /* background-color: var(--color-bg-2); */
 
     grid-column: 2 / 3;
 `
@@ -70,7 +70,8 @@ function ReviewForm({ movie }) {
         formState: { errors }
     } = useForm({
         defaultValues: {
-            rating: movie.rating
+            rating: movie.rating,
+            review: movie.review
         }
     })
 
@@ -82,7 +83,7 @@ function ReviewForm({ movie }) {
     }
 
     return (
-        <Parent>
+        <Parent style={{ background: `${movie.review ? 'transparent' : 'var(--color-bg-2)'}` }}>
             <RatingWrapper>
                 <p>
                     Rating {errors?.rating?.message && <Error>( {errors?.rating?.message} )</Error>}
