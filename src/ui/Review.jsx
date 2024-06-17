@@ -5,6 +5,7 @@ import StarRating from './StarRating'
 import Modal from './Modal'
 import ReviewForm from '../features/movie/ReviewForm'
 import { useEffect } from 'react'
+import Mixins from '../styles/Mixins'
 
 const Parent = styled.div`
     width: 100%;
@@ -20,6 +21,10 @@ const Parent = styled.div`
         width: max-content;
         padding: 12px;
     }
+
+    ${Mixins.phone`
+        grid-column: 1 / -1;
+    `};
 `
 
 const Content = styled.div`

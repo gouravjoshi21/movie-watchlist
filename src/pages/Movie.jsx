@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react'
 import { KEY } from '../features/movie/useMovies'
 import { CiBookmark } from 'react-icons/ci'
 import { useDispatch, useSelector } from 'react-redux'
-import { addMovieInWatchList } from '../features/movie/movieSlice'
 import { RiMovie2Line } from 'react-icons/ri'
 import { useCreateMovie } from '../features/movie/useCreateMovie'
 import Modal from '../ui/Modal'
@@ -23,16 +22,7 @@ import { useDeleteMovie } from '../features/movie/useDeleteMovie'
 import ReviewForm from '../features/movie/ReviewForm'
 import { useUpdateMovie } from '../features/movie/useUpdateMovie'
 import { FiEdit2 } from 'react-icons/fi'
-
-const data = {
-    id: 4,
-    title: 'Spider Man: Homecoming',
-    description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae molestias similique magni modi eius incidunt, neque veritatis cum odio nihil quidem, totam asperiores corrupti, sapiente ullam laudantium iusto architecto error.',
-    year: 2019,
-    cover: 'https://m.media-amazon.com/images/M/MV5BZDEyN2NhMjgtMjdhNi00MmNlLWE5YTgtZGE4MzNjMTRlMGEwXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg',
-    genre: 'action'
-}
+import Mixins from '../styles/Mixins'
 
 const Main = styled(Container)`
     padding: 32px 16px;
@@ -45,7 +35,19 @@ const Main = styled(Container)`
     .movie-review {
         grid-column: 2 / 3;
         grid-row: 4 / 5;
+
+        ${Mixins.phone`
+            grid-column: 1 / -1;
+        `};
     }
+
+    ${Mixins.tabPort`
+        grid-template-columns: 200px 1fr;
+    `};
+
+    ${Mixins.phone`
+        grid-template-columns: 100px 1fr;
+    `};
 `
 const Cover = styled.div`
     width: 100%;
@@ -63,6 +65,12 @@ const Cover = styled.div`
 
     grid-column: 1 / 2;
     grid-row: 1 / 4;
+
+    ${Mixins.phone`
+        height: 180px;
+        border-radius: 8px;
+        grid-row: 1 / 2;
+    `};
 
     img {
         width: 100%;
@@ -87,6 +95,12 @@ const Title = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
+
+    h1 {
+        ${Mixins.phone`
+            font-size: 18px;
+        `};
+    }
 `
 const Year = styled.div`
     color: var(--color-text-1);
@@ -118,12 +132,21 @@ const Description = styled.p`
 
     grid-column: 2 / -1;
     grid-row: 2 / 3;
+
+    ${Mixins.phone`
+        grid-column: 1 / -1;
+        grid-row: 2 / 3;
+    `};
 `
 const Buttons = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: end;
     gap: 12px;
+
+    ${Mixins.phone`
+        grid-column: 1 / -1;
+    `};
 `
 
 function Movie({ imbd = false }) {

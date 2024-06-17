@@ -11,7 +11,7 @@ const Heading = styled.h1`
             font-weight: 600;
 
             ${Mixins.mediumTab`
-                font-size: 28px;
+                font-size: 20px;
             `};
         `}
 

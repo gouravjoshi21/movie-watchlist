@@ -13,6 +13,7 @@ import Modal from '../../ui/Modal'
 import Confirm from '../../ui/Confirm'
 import { useDeleteMovie } from './useDeleteMovie'
 import { useUpdateMovie } from './useUpdateMovie'
+import Mixins from '../../styles/Mixins'
 
 const Parent = styled.div`
     width: 200px;
@@ -29,6 +30,13 @@ const Parent = styled.div`
             }
         }
     }
+
+    ${Mixins.phone`
+        width: 100%;
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 6px;
+    `}
 `
 const Cover = styled.div`
     width: 100%;
@@ -59,6 +67,11 @@ const Cover = styled.div`
             fill: var(--color-bg-3);
         }
     }
+
+    ${Mixins.phone`
+
+        height: 150px;
+    `}
 `
 const Content = styled.div`
     width: 100%;
@@ -77,6 +90,14 @@ const Content = styled.div`
     button {
         position: absolute;
     }
+
+    ${Mixins.phone`
+        padding: 6px 0;
+        
+        p {
+            font-size: 14px;
+        }
+    `}
 `
 
 const Tags = styled.div`

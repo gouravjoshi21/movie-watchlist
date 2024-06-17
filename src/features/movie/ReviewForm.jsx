@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import Button from '../../ui/Button'
 import { useUpdateMovie } from './useUpdateMovie'
 import { useParams } from 'react-router-dom'
+import Mixins from '../../styles/Mixins'
 
 const Parent = styled.div`
     width: 100%;
@@ -15,6 +16,10 @@ const Parent = styled.div`
     /* background-color: var(--color-bg-2); */
 
     grid-column: 2 / 3;
+
+    ${Mixins.phone`
+        grid-column: 1 / -1;
+    `};
 `
 
 const Form = styled.form`

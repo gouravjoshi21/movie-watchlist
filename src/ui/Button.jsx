@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import Mixins from '../styles/Mixins'
 
 const sizes = {
     small: css`
@@ -12,6 +13,17 @@ const sizes = {
             width: 18px;
             height: 18px;
         }
+
+        ${Mixins.phone`
+            font-size: 13px;
+            font-weight: 300;
+            padding: 0 12px;
+
+            svg {
+                width: 16px;
+                height: 16px;
+            }
+        `};
     `,
     medium: css`
         height: 45px;
