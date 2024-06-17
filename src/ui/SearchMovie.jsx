@@ -7,8 +7,10 @@ import { useDispatch } from 'react-redux'
 import { setSearchQuery } from '../features/movie/movieSlice'
 
 const Parent = styled.div`
-    width: 350px;
+    /* width: 350px; */
     position: relative;
+
+    grid-area: search;
 
     input {
         border-radius: 12px;

@@ -3,9 +3,13 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Parent = styled(Link)`
+    margin: 0 auto;
+
     display: flex;
     align-items: center;
     gap: 8px;
+
+    grid-area: logo;
 
     svg {
         width: 32px;
