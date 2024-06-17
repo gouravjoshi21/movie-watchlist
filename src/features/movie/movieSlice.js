@@ -1,14 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    temp: true
+    searchQuery: '',
+    activeMovie: null,
+    watchList: [],
+    searchedMovie: null
 }
 
 const movieSlice = createSlice({
     name: 'movie',
     initialState,
-    reducers: {}
+    reducers: {
+        setSearchQuery(state, action) {
+            console.log(action.payload.query)
+            state.searchQuery = action.payload.query
+        }
+    }
 })
 
-export const {} = movieSlice.actions
+export const { setSearchQuery } = movieSlice.actions
 export default movieSlice.reducer

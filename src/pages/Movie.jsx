@@ -36,7 +36,7 @@ const Main = styled(Container)`
 `
 const Cover = styled.div`
     width: 100%;
-    height: 290px;
+    height: 320px;
     margin-bottom: 8px;
     border-radius: 12px;
     overflow: hidden;

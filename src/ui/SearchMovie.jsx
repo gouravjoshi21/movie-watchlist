@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { RiMovie2Line } from 'react-icons/ri'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { useMovies } from '../features/movie/useMovies'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSearchQuery } from '../features/movie/movieSlice'
 
 const movieList = [
     {
@@ -68,11 +71,12 @@ const Parent = styled.div`
 
 const List = styled.ul`
     width: 100%;
-    height: max-content;
+    max-height: 300px;
     background-color: var(--color-bg-2);
     border-radius: 0 0 12px 12px;
     border: 1px solid var(--color-bg-3);
     overflow: hidden;
+    overflow-y: auto;
 
     position: absolute;
     top: 100%;
@@ -138,16 +142,18 @@ const Message = styled.li`
 
 function SearchMovie() {
     const [active, setActive] = useState(false)
+    const [query, setQuery] = useState('')
+    const { movies, isLoading, error } = useMovies()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const parentRef = useRef(null)
-
+    const timeoutRef = useRef(null)
     function handleFocus(status) {
         const time = status ? 300 : 1
         setTimeout(() => setActive(status), time)
     }
 
     function handleClick(id) {
-        console.log(id)
         navigate(`/movie/${id}`)
     }
 
@@ -164,24 +170,51 @@ function SearchMovie() {
         }
     }, [parentRef])
 
+    useEffect(() => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current)
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            if (query.length > 2) dispatch(setSearchQuery({ query }))
+        }, 1000)
+
+        return () => {
+            clearTimeout(timeoutRef.current)
+        }
+    }, [query])
+
     return (
         <Parent ref={parentRef}>
-            <input type="search" placeholder="Search movies..." onFocus={() => handleFocus(true)} />
+            <input
+                type="search"
+                placeholder="Search movies..."
+                onFocus={() => handleFocus(true)}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+            />
             {active && (
                 <List className="search-list">
-                    {/* <Message>Type something</Message> */}
-                    {movieList.map((movie) => (
-                        <Item onClick={() => handleClick(movie.id)}>
-                            <Cover>
-                                {movie.cover ? (
-                                    <img src={movie.cover} alt={`Movie cover of ${movie.title}`} />
-                                ) : (
-                                    <RiMovie2Line />
-                                )}
-                            </Cover>
-                            <p>{movie.title}</p>
-                        </Item>
-                    ))}
+                    {query.length < 3 && <Message>Type something</Message>}
+                    {isLoading && <Message>Type something</Message>}
+                    {query.length > 2 &&
+                        !isLoading &&
+                        movies.length > 0 &&
+                        movies.map((movie) => (
+                            <Item onClick={() => handleClick(movie.imdbID)}>
+                                <Cover>
+                                    {movie.Poster ? (
+                                        <img
+                                            src={movie.Poster}
+                                            alt={`Movie cover of ${movie.Title}`}
+                                        />
+                                    ) : (
+                                        <RiMovie2Line />
+                                    )}
+                                </Cover>
+                                <p>{movie.Title}</p>
+                            </Item>
+                        ))}
                 </List>
             )}
         </Parent>
