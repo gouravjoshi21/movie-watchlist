@@ -16,15 +16,11 @@ const Main = styled(Container)`
 
 function Home() {
     return (
-        <>
-            <Header></Header>
+        <Main>
+            <Heading>Watch List</Heading>
 
-            <Main>
-                <Heading>Watch List</Heading>
-
-                <MovieList />
-            </Main>
-        </>
+            <MovieList />
+        </Main>
     )
 }
 

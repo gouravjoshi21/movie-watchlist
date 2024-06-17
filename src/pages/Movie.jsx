@@ -15,6 +15,8 @@ import { KEY } from '../features/movie/useMovies'
 import { CiBookmark } from 'react-icons/ci'
 import { useDispatch, useSelector } from 'react-redux'
 import { addMovieInWatchList } from '../features/movie/movieSlice'
+import { RiMovie2Line } from 'react-icons/ri'
+import { useCreateMovie } from '../features/movie/useCreateMovie'
 
 const data = {
     id: 4,
@@ -120,6 +122,7 @@ const Buttons = styled.div`
 
 function Movie({ imbd = false }) {
     const watchList = useSelector((state) => state.movie.watchList)
+    const { createMovie, isCreating } = useCreateMovie()
     const [data, setData] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const navigate = useNavigate()
@@ -127,8 +130,7 @@ function Movie({ imbd = false }) {
     let { id } = useParams()
 
     function handleSaveWatchList() {
-        dispath(addMovieInWatchList({ movie: data }))
-        navigate(`/movie/${id}a`)
+        createMovie(data)
     }
 
     useEffect(() => {
@@ -150,15 +152,14 @@ function Movie({ imbd = false }) {
                         description: data.Plot,
                         year: data.Year,
                         genre: data.Genre.split(', ')[0],
-                        cover: data.Poster,
-                        id: id + 'a'
+                        cover: data.Poster
                     })
                     setIsLoading(false)
                 } catch (error) {
                     navigate('/')
                 }
             } else {
-                let filtered = watchList.filter((movie) => movie.id === id)
+                let filtered = watchList.filter((movie) => movie.id == id)
                 if (!filtered.length) navigate('/')
                 setData(filtered[0])
                 setIsLoading(false)
@@ -170,7 +171,6 @@ function Movie({ imbd = false }) {
 
     return (
         <>
-            <Header />
             {isLoading && <Main>Loading...</Main>}
             {!isLoading && (
                 <Main>
@@ -187,17 +187,16 @@ function Movie({ imbd = false }) {
                             <SlCalender />
                             {data.year ?? '----'}
                         </Year>
-                        <Tags>
-                            <Chip>{ucfirst(data.genre)}</Chip>
-                            <Chip>⭐ 4 rating</Chip>
-                        </Tags>
+                        {data.rating && (
+                            <Tags>
+                                <Chip>{ucfirst(data.genre)}</Chip>
+                                <Chip>⭐ 4 rating</Chip>
+                            </Tags>
+                        )}
                     </Title>
 
-                    <Description>
-                        After being bitten by a genetically-modified spider, a shy teenager gains
-                        spider-like abilities that he uses to fight injustice as a masked superhero
-                        and face a vengeful enemy.
-                    </Description>
+                    {data.description && <Description>{data.description}</Description>}
+
                     <Buttons>
                         {!imbd && (
                             <>
@@ -222,7 +221,7 @@ function Movie({ imbd = false }) {
                         )}
                     </Buttons>
 
-                    {!imbd && <Review className="movie-review" />}
+                    {!imbd && data.review && <Review className="movie-review" />}
                 </Main>
             )}
         </>

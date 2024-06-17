@@ -17,9 +17,12 @@ const movieSlice = createSlice({
         },
         addMovieInWatchList(state, action) {
             state.watchList.push(action.payload.movie)
+        },
+        setWatchList(state, action) {
+            state.watchList = action.payload.movies
         }
     }
 })
 
-export const { setSearchQuery, addMovieInWatchList } = movieSlice.actions
+export const { setSearchQuery, addMovieInWatchList, setWatchList } = movieSlice.actions
 export default movieSlice.reducer

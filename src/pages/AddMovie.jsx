@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Header from '../ui/Header'
 import Container from '../ui/Container'
 import Heading from '../ui/Heading'
 import MovieForm from '../features/movie/MovieForm'
@@ -44,8 +43,6 @@ function AddMovie() {
     return (
         <>
             <Background />
-
-            <Header />
 
             <Main>
                 <Title>

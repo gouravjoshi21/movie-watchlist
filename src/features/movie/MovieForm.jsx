@@ -3,6 +3,8 @@ import FormRow from '../../ui/FormRow'
 import Input from '../../ui/Input'
 import Button from '../../ui/Button'
 import { Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { useCreateMovie } from './useCreateMovie'
 
 const Form = styled.form`
     max-width: 500px;
@@ -31,31 +33,83 @@ const ButtonWrapper = styled.div`
 `
 
 function MovieForm() {
+    const { createMovie, isCreating } = useCreateMovie()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm()
+
+    function onSubmit(data) {
+        createMovie(data)
+    }
+
+    const isImageUrl = (url) => {
+        return url.match(/\.(jpeg|jpg|gif|png)$/) != null
+    }
+
     return (
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
             <Wrapper>
-                <FormRow label="Title">
-                    <Input type="text" placeholder="Movie name" />
+                <FormRow label="Title" error={errors?.title?.message}>
+                    <Input
+                        type="text"
+                        placeholder="Movie name"
+                        {...register('title', {
+                            required: 'Title is required!'
+                        })}
+                    />
                 </FormRow>
-                <FormRow label="Description">
-                    <Input type="input" as="textarea" placeholder="description" />
+                <FormRow label="Description" error={errors?.description?.message}>
+                    <Input
+                        type="input"
+                        as="textarea"
+                        placeholder="description"
+                        {...register('description')}
+                    />
                 </FormRow>
-                <FormRow label="Release year">
-                    <Input type="number" placeholder="2020" />
+                <FormRow label="Release year" error={errors?.year?.message}>
+                    <Input
+                        type="number"
+                        placeholder="2020"
+                        {...register('year', {
+                            required: 'Release year is required!',
+                            validate: (value) => {
+                                const year = parseInt(value, 10)
+                                if (isNaN(year)) {
+                                    return 'Release year must be a number'
+                                }
+                                if (year < 1888 || year > new Date().getFullYear()) {
+                                    return 'Should be 1888 and the current year'
+                                }
+                                return true
+                            }
+                        })}
+                    />
                 </FormRow>
-                <FormRow label="Genre">
-                    <Input type="text" placeholder="Action, Comedy" />
+                <FormRow label="Genre" error={errors?.genre?.message}>
+                    <Input type="text" placeholder="Action, Comedy" {...register('genre')} />
                 </FormRow>
-                <FormRow label="Cover url ( Optional )">
-                    <Input type="url" />
+                <FormRow label="Cover url ( Optional )" error={errors?.cover?.message}>
+                    <Input
+                        type="url"
+                        {...register('cover', {
+                            validate: (value) => {
+                                if (value && !isImageUrl(value)) {
+                                    return 'Cover URL must be an image URL ending in .jpg, .jpeg, .gif, or .png'
+                                }
+                                return true
+                            }
+                        })}
+                    />
                 </FormRow>
             </Wrapper>
             <ButtonWrapper>
-                <Button size="medium" var="tertiary" as={Link} to="/">
+                <Button size="medium" var="tertiary" as={Link} to="/" disabled={isCreating}>
                     Cancel
                 </Button>
-                <Button size="medium" var="primary">
-                    Add
+                <Button size="medium" var="primary" disabled={isCreating}>
+                    {isCreating ? 'Adding...' : 'Add'}
                 </Button>
             </ButtonWrapper>
         </Form>

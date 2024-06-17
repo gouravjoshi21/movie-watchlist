@@ -40,6 +40,7 @@ const Label = styled.label`
 
 const Error = styled.span`
     color: var(--color-red-1);
+    font-size: 14px;
 `
 
 const Body = styled.div`
