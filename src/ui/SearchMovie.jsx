@@ -3,47 +3,8 @@ import { RiMovie2Line } from 'react-icons/ri'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useMovies } from '../features/movie/useMovies'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setSearchQuery } from '../features/movie/movieSlice'
-
-const movieList = [
-    {
-        id: 4,
-        title: 'Spider man',
-        description:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae molestias similique magni modi eius incidunt, neque veritatis cum odio nihil quidem, totam asperiores corrupti, sapiente ullam laudantium iusto architecto error.',
-        year: 2019,
-        cover: 'https://m.media-amazon.com/images/M/MV5BZDEyN2NhMjgtMjdhNi00MmNlLWE5YTgtZGE4MzNjMTRlMGEwXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_SX300.jpg',
-        genre: 'action'
-    },
-    {
-        id: 5,
-        title: 'Spider-Man: No Way Home',
-        description:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae molestias similique magni modi eius incidunt, neque veritatis cum odio nihil quidem, totam asperiores corrupti, sapiente ullam laudantium iusto architecto error.',
-        year: 2021,
-        cover: 'https://m.media-amazon.com/images/M/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_SX300.jpg',
-        genre: 'action'
-    },
-    {
-        id: 6,
-        title: 'Spider-Man: Homecoming',
-        description:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae molestias similique magni modi eius incidunt, neque veritatis cum odio nihil quidem, totam asperiores corrupti, sapiente ullam laudantium iusto architecto error.',
-        year: 2017,
-        cover: 'https://m.media-amazon.com/images/M/MV5BODY2MTAzOTQ4M15BMl5BanBnXkFtZTgwNzg5MTE0MjI@._V1_SX300.jpg',
-        genre: 'action'
-    },
-    {
-        id: 7,
-        title: 'Spider-Man: 4',
-        description:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae molestias similique magni modi eius incidunt, neque veritatis cum odio nihil quidem, totam asperiores corrupti, sapiente ullam laudantium iusto architecto error.',
-        year: 2017,
-        cover: '',
-        genre: 'action'
-    }
-]
 
 const Parent = styled.div`
     width: 350px;
@@ -62,10 +23,6 @@ const Parent = styled.div`
         &:focus {
             border-radius: 12px 12px 0 0;
         }
-
-        /* &:focus ~ .search-list {
-            display: grid;
-        } */
     }
 `
 
