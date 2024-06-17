@@ -8,7 +8,7 @@ import Chip from '../ui/Chip'
 import { ucfirst } from '../utils/helpers'
 import Button from '../ui/Button'
 import { AiOutlineDelete } from 'react-icons/ai'
-import { FaRegEye } from 'react-icons/fa'
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
 import Review from '../ui/Review'
 import { useEffect, useState } from 'react'
 import { KEY } from '../features/movie/useMovies'
@@ -21,6 +21,8 @@ import Modal from '../ui/Modal'
 import Confirm from '../ui/Confirm'
 import { useDeleteMovie } from '../features/movie/useDeleteMovie'
 import ReviewForm from '../features/movie/ReviewForm'
+import { useUpdateMovie } from '../features/movie/useUpdateMovie'
+import { FiEdit2 } from 'react-icons/fi'
 
 const data = {
     id: 4,
@@ -126,6 +128,7 @@ const Buttons = styled.div`
 
 function Movie({ imbd = false }) {
     const watchList = useSelector((state) => state.movie.watchList)
+    const { updateMovie, isUpdating } = useUpdateMovie()
     const { deleteMovie, isDeleting } = useDeleteMovie()
     const { createMovie, isCreating } = useCreateMovie()
     const [data, setData] = useState(null)
@@ -136,6 +139,10 @@ function Movie({ imbd = false }) {
 
     function handleSaveWatchList() {
         createMovie(data)
+    }
+
+    function toggleWatchStatus(status) {
+        updateMovie({ id, watched: status })
     }
 
     useEffect(() => {
@@ -227,11 +234,36 @@ function Movie({ imbd = false }) {
                                         </Confirm>
                                     </Modal.Window>
                                 </Modal>
-
-                                <Button size="small" var="tertiary">
-                                    <FaRegEye />
-                                    Watched
+                                <Button
+                                    size="small"
+                                    var="tertiary"
+                                    as={Link}
+                                    to={`/edit-movie/${data.id}`}
+                                >
+                                    <FiEdit2 />
+                                    Edit
                                 </Button>
+                                {!data.watched ? (
+                                    <Button
+                                        size="small"
+                                        var="tertiary"
+                                        onClick={() => toggleWatchStatus(true)}
+                                        disabled={isUpdating}
+                                    >
+                                        <FaRegEye />
+                                        Set Watched
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        size="small"
+                                        var="tertiary"
+                                        onClick={() => toggleWatchStatus(false)}
+                                        disabled={isUpdating}
+                                    >
+                                        <FaRegEyeSlash />
+                                        Set Not Watched
+                                    </Button>
+                                )}
                             </>
                         )}
 
@@ -244,7 +276,7 @@ function Movie({ imbd = false }) {
                             </>
                         )}
                     </Buttons>
-                    {!data.review && <ReviewForm movie={data} />}
+                    {!imbd && !data.review && <ReviewForm movie={data} />}
                     {!imbd && data.review && <Review className="movie-review" movie={data} />}
                 </Main>
             )}

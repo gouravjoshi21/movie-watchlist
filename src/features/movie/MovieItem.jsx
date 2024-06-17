@@ -8,10 +8,11 @@ import Menus from '../../ui/Menus'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { FiEdit2 } from 'react-icons/fi'
 import { MdOutlineArrowOutward } from 'react-icons/md'
-import { FaRegEye } from 'react-icons/fa'
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
 import Modal from '../../ui/Modal'
 import Confirm from '../../ui/Confirm'
 import { useDeleteMovie } from './useDeleteMovie'
+import { useUpdateMovie } from './useUpdateMovie'
 
 const Parent = styled.div`
     width: 200px;
@@ -87,11 +88,16 @@ const Tags = styled.div`
     gap: 6px;
 `
 
-function MovieItem({ movie: { id, title, description, year, genre, cover, rating } }) {
+function MovieItem({ movie: { id, title, description, year, genre, cover, rating, watched } }) {
     const { deleteMovie, isDeleting } = useDeleteMovie()
+    const { updateMovie, isUpdating } = useUpdateMovie(false)
 
     function handleRemove(id) {
         deleteMovie(id)
+    }
+
+    function toggleWatchStatus(status) {
+        updateMovie({ id, watched: status })
     }
 
     return (
@@ -125,7 +131,21 @@ function MovieItem({ movie: { id, title, description, year, genre, cover, rating
                                     <Menus.Button icon={<AiOutlineDelete />}>Remove</Menus.Button>
                                 </Modal.Open>
 
-                                <Menus.Button icon={<FaRegEye />}>Watched</Menus.Button>
+                                {!watched ? (
+                                    <Menus.Button
+                                        icon={<FaRegEye />}
+                                        onClick={() => toggleWatchStatus(true)}
+                                    >
+                                        Set Watched
+                                    </Menus.Button>
+                                ) : (
+                                    <Menus.Button
+                                        icon={<FaRegEyeSlash />}
+                                        onClick={() => toggleWatchStatus(false)}
+                                    >
+                                        Set Not Watched
+                                    </Menus.Button>
+                                )}
                             </Menus.List>
                         </Menus.Menu>
                     </Menus>

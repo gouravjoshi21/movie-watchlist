@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { updateMovieInWatchList } from './movieSlice'
 
-export function useUpdateMovie() {
+export function useUpdateMovie(redirect = true) {
     const dispath = useDispatch()
     const navigate = useNavigate()
 
@@ -14,7 +14,7 @@ export function useUpdateMovie() {
         mutationFn: updateMovieApi,
         onSuccess: (data) => {
             dispath(updateMovieInWatchList({ movie: data[0] }))
-            navigate(`/movie/${data[0].id}`)
+            if (redirect) navigate(`/movie/${data[0].id}`)
             toast.success('Movie Updated successfully!')
         },
         onError: (err) => toast.error(err.message)
