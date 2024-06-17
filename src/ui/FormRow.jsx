@@ -57,7 +57,6 @@ const Body = styled.div`
     }
 
     input {
-        max-width: 400px;
         height: 45px;
         padding: 0 16px;
         background-color: var(--color-bg-3);

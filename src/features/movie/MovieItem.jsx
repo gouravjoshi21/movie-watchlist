@@ -145,7 +145,7 @@ function MovieItem({ movie: { id, title, description, year, genre, cover, rating
 
                 <Tags>
                     <Chip>{ucfirst(genre)}</Chip>
-                    {rating && <Chip>⭐ 4 rating</Chip>}
+                    {rating && <Chip>⭐ {rating} rating</Chip>}
                 </Tags>
             </Content>
         </Parent>

@@ -1,6 +1,7 @@
 import { GoPencil } from 'react-icons/go'
 import styled from 'styled-components'
 import Button from './Button'
+import StarRating from './StarRating'
 
 const Parent = styled.div`
     width: 100%;
@@ -28,14 +29,14 @@ const Stars = styled.div`
     justify-content: end;
 `
 
-function Review({ ...props }) {
+function Review({ review, rating, ...props }) {
     return (
         <Parent {...props}>
-            <Content>Great!</Content>
+            <Content>{review}</Content>
             <Button size="small" var="tertiary">
                 <GoPencil />
             </Button>
-            <Stars>⭐⭐⭐⭐⭐</Stars>
+            <StarRating maxRating={5} size={22} defaultRating={rating} disabled={'true'} />
         </Parent>
     )
 }

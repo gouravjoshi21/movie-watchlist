@@ -20,6 +20,7 @@ import { useCreateMovie } from '../features/movie/useCreateMovie'
 import Modal from '../ui/Modal'
 import Confirm from '../ui/Confirm'
 import { useDeleteMovie } from '../features/movie/useDeleteMovie'
+import ReviewForm from '../features/movie/ReviewForm'
 
 const data = {
     id: 4,
@@ -171,7 +172,7 @@ function Movie({ imbd = false }) {
         }
 
         getData()
-    }, [id, imbd])
+    }, [id, imbd, watchList])
 
     function handleRemove(id) {
         deleteMovie(id)
@@ -198,7 +199,7 @@ function Movie({ imbd = false }) {
 
                         <Tags>
                             <Chip>{ucfirst(data.genre)}</Chip>
-                            {data.rating && <Chip>⭐ 4 rating</Chip>}
+                            {data.rating && <Chip>⭐ {data.rating} rating</Chip>}
                         </Tags>
                     </Title>
 
@@ -243,8 +244,14 @@ function Movie({ imbd = false }) {
                             </>
                         )}
                     </Buttons>
-
-                    {!imbd && data.review && <Review className="movie-review" />}
+                    {!data.review && <ReviewForm movie={data} />}
+                    {!imbd && data.review && (
+                        <Review
+                            className="movie-review"
+                            review={data.review}
+                            rating={data.rating}
+                        />
+                    )}
                 </Main>
             )}
         </>
