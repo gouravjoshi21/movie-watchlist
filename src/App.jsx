@@ -22,15 +22,15 @@ function App() {
                 <RouterProvider router={router} />
 
                 <Toaster
-                    position="top-center"
+                    position="bottom-center"
                     gutter={12}
                     containerStyle={{ margin: '8px' }}
                     toastOptions={{
                         success: {
-                            duration: 3000
+                            duration: 1500
                         },
                         error: {
-                            duration: 5000
+                            duration: 2000
                         },
                         style: {
                             fontSize: '14px',

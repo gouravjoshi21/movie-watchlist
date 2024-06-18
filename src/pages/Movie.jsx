@@ -23,6 +23,8 @@ import ReviewForm from '../features/movie/ReviewForm'
 import { useUpdateMovie } from '../features/movie/useUpdateMovie'
 import { FiEdit2 } from 'react-icons/fi'
 import Mixins from '../styles/Mixins'
+import Head from '../utils/Head'
+import LoadingSection from '../ui/LoadingSection'
 
 const Main = styled(Container)`
     padding: 32px 16px;
@@ -210,9 +212,10 @@ function Movie({ imbd = false }) {
 
     return (
         <>
-            {isLoading && <Main>Loading...</Main>}
+            {isLoading && <LoadingSection />}
             {!isLoading && (
                 <Main>
+                    <Head data={{ title: data.title }} />
                     <Cover className="cover">
                         {data.cover ? (
                             <img src={data.cover} alt={`Movie cover of ${data.title}`} />
@@ -228,7 +231,7 @@ function Movie({ imbd = false }) {
                         </Year>
 
                         <Tags>
-                            <Chip>{ucfirst(data.genre)}</Chip>
+                            {data.genre && <Chip>{ucfirst(data.genre)}</Chip>}
                             {data.rating && <Chip>⭐ {data.rating} rating</Chip>}
                         </Tags>
                     </Title>
@@ -261,7 +264,7 @@ function Movie({ imbd = false }) {
                                     size="small"
                                     var="tertiary"
                                     as={Link}
-                                    to={`/edit-movie/${data.id}`}
+                                    to={`/edit-movie/${id}`}
                                 >
                                     <FiEdit2 />
                                     Edit

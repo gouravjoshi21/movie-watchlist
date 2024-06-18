@@ -4,6 +4,7 @@ import Heading from '../ui/Heading'
 import MovieForm from '../features/movie/MovieForm'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import Head from '../utils/Head'
 
 const Main = styled(Container)`
     max-width: 400px;
@@ -50,6 +51,8 @@ function EditMovie() {
 
     return (
         <>
+            <Head data={{ title: `Edit ${filtered[0].title} movie` }} />
+
             <Background />
 
             <Main>

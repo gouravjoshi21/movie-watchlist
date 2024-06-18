@@ -4,7 +4,12 @@ import Container from '../ui/Container'
 import Header from '../ui/Header'
 import Heading from '../ui/Heading'
 import MovieList from '../features/movie/MovieList'
+import { Helmet } from 'react-helmet'
+import Head from '../utils/Head'
 
+const metaTags = {
+    title: 'Movies Watchlist'
+}
 const Main = styled(Container)`
     padding: 32px 16px 64px 16px;
 
@@ -17,6 +22,7 @@ const Main = styled(Container)`
 function Home() {
     return (
         <Main>
+            <Head data={metaTags} />
             <Heading>Watch List</Heading>
 
             <MovieList />

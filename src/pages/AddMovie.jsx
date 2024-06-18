@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import Container from '../ui/Container'
 import Heading from '../ui/Heading'
 import MovieForm from '../features/movie/MovieForm'
+import Head from '../utils/Head'
 
 const Main = styled(Container)`
     max-width: 400px;
@@ -42,6 +43,8 @@ const Title = styled.div`
 function AddMovie() {
     return (
         <>
+            <Head data={{ title: `Add a movie to your watch list` }} />
+
             <Background />
 
             <Main>
