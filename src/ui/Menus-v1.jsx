@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { HiEllipsisVertical } from 'react-icons/hi2'
 import styled from 'styled-components'
@@ -31,6 +31,7 @@ const StyledToggle = styled.button`
 
 const StyledList = styled.ul`
     position: fixed;
+
     background-color: var(--color-bg-2);
     box-shadow: var(--shadow-md);
     border-radius: var(--border-radius-md);
@@ -72,7 +73,7 @@ function Menus({ children }) {
     const [position, setPosition] = useState(null)
 
     const close = () => setOpenId('')
-    const open = (id) => setOpenId(id)
+    const open = setOpenId
 
     return (
         <MenusContext.Provider value={{ openId, close, open, position, setPosition }}>
@@ -82,6 +83,8 @@ function Menus({ children }) {
 }
 
 function Toggle({ id }) {
+    // const props = useContext(MenusContext)
+    // console.log(props)
     const { openId, close, open, setPosition } = useContext(MenusContext)
 
     function handleClick(e) {
@@ -105,25 +108,6 @@ function List({ id, children }) {
     const { openId, close, position } = useContext(MenusContext)
     const ref = useOutsideClick(close, false)
 
-    useEffect(() => {
-        if (openId === id) {
-            const handleScroll = () => close()
-            const handleClickOutside = (event) => {
-                if (ref.current && !ref.current.contains(event.target)) {
-                    close()
-                }
-            }
-
-            document.addEventListener('scroll', handleScroll, true)
-            document.addEventListener('click', handleClickOutside, true)
-
-            return () => {
-                document.removeEventListener('scroll', handleScroll, true)
-                document.removeEventListener('click', handleClickOutside, true)
-            }
-        }
-    }, [openId, id, close, ref])
-
     if (openId !== id) return null
 
     return createPortal(
@@ -141,7 +125,6 @@ function Button({ children, icon, onClick, ...props }) {
         onClick?.()
         close()
     }
-
     return (
         <li>
             <StyledButton onClick={handleClick} {...props}>
