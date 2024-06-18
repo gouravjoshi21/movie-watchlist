@@ -39,7 +39,7 @@ const Stars = styled.div`
 
 function Review({ movie, ...props }) {
     useEffect(() => {
-        console.log(movie)
+        // console.log(movie)
     }, [movie])
 
     return (

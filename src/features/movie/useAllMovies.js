@@ -18,9 +18,8 @@ export function useAllMovies() {
 
                 setMovies(res)
 
-                console.log(res)
-
                 if (res.length > 0) dispatch(setWatchList({ movies: res }))
+                setIsLoading(false)
             } catch (error) {
                 if (error.name !== 'AbortError') {
                     setError(error.message)
